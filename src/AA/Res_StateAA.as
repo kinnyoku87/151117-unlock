@@ -6,6 +6,8 @@ package AA {
 	import d2armor.resource.FilesBundle;
 	import d2armor.resource.ResMachine;
 	import d2armor.resource.handlers.TextureAA_BundleHandler;
+	import d2armor.ui.skins.SkinManager;
+	import d2armor.ui.skins.ToggleSkin;
 	
 public class Res_StateAA extends StateAA {
 	
@@ -33,6 +35,12 @@ public class Res_StateAA extends StateAA {
 			AY.push("temp/virtualCamera.png");
 		}
 		this.resA.addBundle(new FilesBundle(AY), new TextureAA_BundleHandler(1.0, false, false));
+		
+//		AY = new <String>
+//		[
+//			"sketch/hotspot.png"
+//		];
+//		SkinManager.registerSkin("radio", new ToggleSkin(AY, 0, 0, 0 , 0, 0, 0, 0, 0));
 		
 		this.resA.addEventListener(AEvent.COMPLETE, onComplete);
 	}

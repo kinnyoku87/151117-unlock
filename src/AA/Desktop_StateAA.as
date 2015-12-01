@@ -17,10 +17,19 @@ public class Desktop_StateAA extends StateAA {
 	override public function onEnter():void {
 		var tweenA:ATween;
 		
+		//Armor.getTick().timeScale = 0.3
+		
 		this.getFusion().touchable = false;
 		
 		_bgA = ImageUtil.createImg("temp/desk_bg.png");
 		this.getFusion().addNode(_bgA);
+		
+		_bgA.pivotX = _bgA.sourceWidth * .5;
+		_bgA.pivotY = _bgA.sourceHeight * .5;
+		
+		_bgA.x = _bgA.sourceWidth * .5;
+		_bgA.y = _bgA.sourceHeight * .5;
+		_bgA.alpha = 0.0;
 		
 		_bgB = ImageUtil.createImg("temp/desk.png");
 		this.getFusion().addNode(_bgB);
@@ -31,9 +40,9 @@ public class Desktop_StateAA extends StateAA {
 		_bgB.x = _bgB.sourceWidth * .5;
 		_bgB.y = _bgB.sourceHeight * .5;
 		
-		tweenA = TweenMachine.from(_bgA, ViewCfg.DURA_DESKTOP, {alpha:0.0}, ViewCfg.DELAY_DESKTOP);
+		tweenA = TweenMachine.to(_bgA, ViewCfg.DURA_DESKTOP, {alpha:1.0, scaleX:ViewCfg.DESKTOP_PRE_SCALE_BG, scaleY:ViewCfg.DESKTOP_PRE_SCALE_BG}, ViewCfg.DELAY_DESKTOP);
 		//tweenA.easing = Quad.easeOut;
-		tweenA = TweenMachine.from(_bgB, ViewCfg.DURA_DESKTOP, {alpha:0.0, scaleX:ViewCfg.DESKTOP_PRE_SCALE, scaleY:ViewCfg.DESKTOP_PRE_SCALE}, ViewCfg.DELAY_DESKTOP);
+		tweenA = TweenMachine.from(_bgB, ViewCfg.DURA_DESKTOP, {alpha:0.0, scaleX:ViewCfg.DESKTOP_PRE_SCALE_ICON, scaleY:ViewCfg.DESKTOP_PRE_SCALE_ICON}, ViewCfg.DELAY_DESKTOP);
 		//tweenA.easing = Quad.easeOut;
 		tweenA.onComplete = function() : void {
 			getFusion().touchable = true;

@@ -14,9 +14,12 @@ package AA {
 	import d2armor.display.AAFacade;
 	import d2armor.display.DragFusionAA;
 	import d2armor.display.ImageAA;
+	import d2armor.display.RadioAA;
 	import d2armor.display.StateAA;
+	import d2armor.events.AEvent;
 	import d2armor.events.ATouchEvent;
 	import d2armor.events.DragEvent;
+	import d2armor.ui.RadioGroup;
 	import d2armor.utils.AMath;
 	
 	import util.ImageUtil;
@@ -25,6 +28,11 @@ package AA {
 public class Launch_StateAA extends StateAA {
 	
 	override public function onEnter() : void {
+		var radio:RadioAA;
+		var i:int;
+		var l:int;
+		var imgA:ImageAA;
+		
 		_dragFN = new DragFusionAA;
 		this.getFusion().addNode(_dragFN);
 		_dragFN.addEventListener(DragEvent.START_DRAG, onStartDrag);
@@ -35,7 +43,26 @@ public class Launch_StateAA extends StateAA {
 		_dragFN.addNode(_launchBg);
 		_launchBg.addEventListener(ATouchEvent.PRESS,     onPreDesktop);
 		_launchBg.addEventListener(ATouchEvent.UNBINDING, onPostDesktop);
-			
+		
+		_radioGroup = new RadioGroup();
+		this.getFusion().insertEventListener(_radioGroup, AEvent.CHANGE, onRadioGroupChanged);
+		l = 2;
+		while(i < l) {
+			radio = new RadioAA;
+			radio.group = _radioGroup;
+			//radio.skinId = "radio";
+			imgA = ImageUtil.createImg("sketch/hotspot.png");
+			imgA.scaleX = ViewCfg.HOTSPOT_SCALE;
+			imgA.scaleY = ViewCfg.HOTSPOT_SCALE;
+			radio.addNode(imgA);
+			radio.y = i * 150 + 200;
+			radio.alpha = 0.3;
+			radio.addEventListener(AEvent.CHANGE, onRadioChanged);
+			_dragFN.addNode(radio);
+			i++;
+		}
+		_radioGroup.selectedIndex = 0;
+		
 		_cameraBtn = ImageUtil.createSketchImg("temp/cameraBtn.png", false, ViewCfg.HOTSPOT_SCALE);
 		_dragFN.addNode(_cameraBtn);
 		_cameraBtn.x = this.getRoot().getAdapter().rootWidth - _cameraBtn.sourceWidth * _cameraBtn.scaleX - 30;
@@ -70,7 +97,21 @@ public class Launch_StateAA extends StateAA {
 	private var _cameraBtn:ImageAA;
 	private var _desktopBtn:ImageAA;
 	
+	private var _radioGroup:RadioGroup;
+	private var _intoUnlock:Boolean; // 是否进入解锁状态
 	
+	
+	private function onRadioChanged(e:AEvent):void{
+		var radioA:RadioAA;
+		
+		radioA = e.target as RadioAA;
+		//trace(radioA.selected);
+		radioA.alpha = radioA.selected ? 1.0 : 0.3;
+	}
+	
+	private function onRadioGroupChanged(e:AEvent):void{
+		_intoUnlock = (_radioGroup.selectedIndex == 0)
+	}
 	
 	private function onPreCamera(e:ATouchEvent):void{
 		var tweenA:ATween;
@@ -184,9 +225,13 @@ public class Launch_StateAA extends StateAA {
 				getFusion().kill();
 				
 			}
-//			getFusion().kill();
+			if(_intoUnlock){
+				this.getRoot().getView("unlock").activate();
+			}
+			else {
+				this.getRoot().getView("desktop").activate();
+			}
 			
-			this.getRoot().getView("desktop").activate();
 		}
 	}
 	

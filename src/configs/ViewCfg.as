@@ -16,6 +16,12 @@ package configs
 		
 		public static const CAMERA_DRAG_VELOCITY:Number = 60;
 		
-		public static const DESKTOP_PRE_SCALE:Number = 0.95;
+		public static const DESKTOP_PRE_SCALE_ICON:Number = 0.95;
+		public static const DESKTOP_PRE_SCALE_BG:Number = 1.1;
+		
+		public static const DURA_UNLOCK:Number = 0.55;
+		
+		
+		//public static const DESKTOP_PRE_SCALE_BG:Number = 1.1;
 	}
 }
