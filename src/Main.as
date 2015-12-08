@@ -11,7 +11,7 @@ package {
 	import d2armor.logging.ILogger;
 	import d2armor.utils.Stats;
 	
-	import initializers.Initializer151117_A;
+	import launchers.Launcher_151117_A;
 	
 	[SWF(width = "450", height = "800", backgroundColor = "0x0", frameRate = "60")]
 public class Main extends Sprite {
@@ -32,11 +32,11 @@ public class Main extends Sprite {
 		//}
 
 		if(Multitouch.maxTouchPoints == 0){
-			Armor.startup(1080, 1920, new DesktopPlatform, stage, Initializer151117_A);
+			Armor.startup(1080, 1920, new DesktopPlatform, stage, Launcher_151117_A);
 			//			Security.allowDomain("*");
 		}
 		else{
-			Armor.startup(1080, 1920, new MobilePlatform(false), stage, Initializer151117_A);
+			Armor.startup(1080, 1920, new MobilePlatform(false), stage, Launcher_151117_A);
 		}
 	}
 }

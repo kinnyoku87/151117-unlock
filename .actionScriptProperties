@@ -39,8 +39,7 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_agent.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="3" linkType="1" path="D:/armor2d-core/lib/armor2d-event.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="D:/armor2d-core/lib/armor2d-drive.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="D:/armor2d-core/lib/armor2d-z.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -92,4 +91,3 @@
     </buildTarget>
   </buildTargets>
 </actionScriptProperties>
-

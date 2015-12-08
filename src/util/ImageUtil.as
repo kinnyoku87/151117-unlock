@@ -7,8 +7,8 @@ public class ImageUtil {
 	public static const HOTSPOT_SCALE:Number = 3.0;
 	
 	
-//	public static var allUseSketch:Boolean;
-	public static var allUseSketch:Boolean = true;
+	public static var allUseSketch:Boolean;
+//	public static var allUseSketch:Boolean = true;
 	
 	
 	public static function createImg( textureId:String, pivot:Boolean = false ) : ImageAA {

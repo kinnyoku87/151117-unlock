@@ -19,6 +19,7 @@ package configs
 		public static const DESKTOP_PRE_SCALE_ICON:Number = 0.95;
 		public static const DESKTOP_PRE_SCALE_BG:Number = 1.1;
 		
+		public static const DELAY_UNLOCK:Number = 0.05;
 		public static const DURA_UNLOCK:Number = 0.55;
 		
 		

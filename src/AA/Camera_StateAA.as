@@ -12,7 +12,10 @@ package AA
 	import d2armor.display.textures.VideoTextureAA;
 	import d2armor.events.ATouchEvent;
 	
+	import events.view.V_CameraEvent;
+	
 	import util.CameraUtil;
+	import util.EventUtil;
 	import util.ImageUtil;
 
 public class Camera_StateAA extends StateAA
@@ -32,6 +35,8 @@ public class Camera_StateAA extends StateAA
 		_closeBtn.scaleY = ViewCfg.HOTSPOT_SCALE;
 		this.getFusion().addNode(_closeBtn);
 		_closeBtn.addEventListener(ATouchEvent.CLICK, onCloseCamera);
+		
+		this.insertEventListener(EventUtil.edView, V_CameraEvent.LAUNCH_CAMERA, onLaunchCamera);
 	}
 	
 	
@@ -45,7 +50,7 @@ public class Camera_StateAA extends StateAA
 	private var _isInitCamera:Boolean;
 	
 	
-	public function initCamera():void{
+	private function onLaunchCamera( e:V_CameraEvent ):void{
 		var ratioX:Number;
 		var ratioY:Number;
 		var ratioA:Number;

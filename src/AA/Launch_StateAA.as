@@ -3,25 +3,26 @@ package AA {
 	
 	import configs.ViewCfg;
 	
-	import d2armor.Armor;
 	import d2armor.animate.TweenMachine;
 	import d2armor.animate.core.ATween;
 	import d2armor.animate.easing.Back;
-	import d2armor.animate.easing.Bounce;
-	import d2armor.animate.easing.Elastic;
 	import d2armor.animate.easing.Linear;
 	import d2armor.animate.easing.Quad;
-	import d2armor.display.AAFacade;
 	import d2armor.display.DragFusionAA;
+	import d2armor.display.FusionAA;
 	import d2armor.display.ImageAA;
 	import d2armor.display.RadioAA;
 	import d2armor.display.StateAA;
+	import d2armor.display.core.NodeAA;
 	import d2armor.events.AEvent;
 	import d2armor.events.ATouchEvent;
 	import d2armor.events.DragEvent;
 	import d2armor.ui.RadioGroup;
 	import d2armor.utils.AMath;
 	
+	import events.view.V_CameraEvent;
+	
+	import util.EventUtil;
 	import util.ImageUtil;
 	import util.ResUtil;
 	
@@ -44,8 +45,26 @@ public class Launch_StateAA extends StateAA {
 		_launchBg.addEventListener(ATouchEvent.PRESS,     onPreDesktop);
 		_launchBg.addEventListener(ATouchEvent.UNBINDING, onPostDesktop);
 		
+		_launchBgBlur = new ImageAA;
+		_launchBgBlur.textureId = ResUtil.getTemp("launch_bg_blur");
+		_launchBgBlur.visible = false;
+		this.getFusion().addNode(_launchBgBlur);
+		
+		_funsionA = new FusionAA;
+		_dragFN.addNode(_funsionA);
+		
+		_statusBar = new ImageAA;
+		_statusBar.textureId = ResUtil.getTemp("statusBar");
+		_funsionA.addNode(_statusBar);
+		
+		_widget = new ImageAA;
+		_widget.textureId = ResUtil.getTemp("widget");
+		_funsionA.addNode(_widget);
+		
+		_statusBar.touchable = _widget.touchable = false;
+		
 		_radioGroup = new RadioGroup();
-		this.getFusion().insertEventListener(_radioGroup, AEvent.CHANGE, onRadioGroupChanged);
+		this.insertEventListener(_radioGroup, AEvent.CHANGE, onRadioGroupChanged);
 		l = 2;
 		while(i < l) {
 			radio = new RadioAA;
@@ -55,7 +74,7 @@ public class Launch_StateAA extends StateAA {
 			imgA.scaleX = ViewCfg.HOTSPOT_SCALE;
 			imgA.scaleY = ViewCfg.HOTSPOT_SCALE;
 			radio.addNode(imgA);
-			radio.y = i * 150 + 200;
+			radio.y = i * 150 + 1200;
 			radio.alpha = 0.3;
 			radio.addEventListener(AEvent.CHANGE, onRadioChanged);
 			_dragFN.addNode(radio);
@@ -64,17 +83,28 @@ public class Launch_StateAA extends StateAA {
 		_radioGroup.selectedIndex = 0;
 		
 		_cameraBtn = ImageUtil.createSketchImg("temp/cameraBtn.png", false, ViewCfg.HOTSPOT_SCALE);
+		_cameraBtn.pivotX = _cameraBtn.sourceWidth / 2;
+		_cameraBtn.pivotY = _cameraBtn.sourceHeight / 2;
+		_cameraBtn.setCollisionMethod(function(localX:Number, localY:Number, node:NodeAA ) : Boolean {
+			if(AMath.distance(localX, localY, 0, 0) < 100){
+				return true;
+			}
+			return false;
+		});
 		_dragFN.addNode(_cameraBtn);
-		_cameraBtn.x = this.getRoot().getAdapter().rootWidth - _cameraBtn.sourceWidth * _cameraBtn.scaleX - 30;
-		_cameraBtn.y = this.getRoot().getAdapter().rootHeight - _cameraBtn.sourceHeight * _cameraBtn.scaleX - 5;
+		_cameraBtn.x = this.getRoot().getAdapter().rootWidth - 110;
+		_cameraBtn.y = this.getRoot().getAdapter().rootHeight - 80;
+		
 		_cameraBtn.addEventListener(ATouchEvent.PRESS,     onPreCamera);
 		_cameraBtn.addEventListener(ATouchEvent.UNBINDING, onPostCamera);
 		
-		_desktopBtn = ImageUtil.createSketchImg("temp/desktopBtn.png", false, ViewCfg.HOTSPOT_SCALE);
-		_desktopBtn.touchable = false;
-		_dragFN.addNode(_desktopBtn);
-		_desktopBtn.x = (this.getRoot().getAdapter().rootWidth - _desktopBtn.sourceWidth * _desktopBtn.scaleX) / 2;
-		_desktopBtn.y = this.getRoot().getAdapter().rootHeight - _desktopBtn.sourceHeight * _desktopBtn.scaleX - 5;
+		
+//		_desktopBtn = ImageUtil.createSketchImg("temp/desktopBtn.png", false, ViewCfg.HOTSPOT_SCALE);
+//		_desktopBtn.touchable = false;
+//		_dragFN.addNode(_desktopBtn);
+//		_desktopBtn.x = (this.getRoot().getAdapter().rootWidth - _desktopBtn.sourceWidth * _desktopBtn.scaleX) / 2;
+//		_desktopBtn.y = this.getRoot().getAdapter().rootHeight - _desktopBtn.sourceHeight * _desktopBtn.scaleX - 5;
+		
 //		_desktopBtn.addEventListener(ATouchEvent.PRESS,     onPreDesktop);
 //		_desktopBtn.addEventListener(ATouchEvent.UNBINDING, onPostDesktop);
 	}
@@ -94,6 +124,12 @@ public class Launch_StateAA extends StateAA {
 	
 	private var _dragFN:DragFusionAA;
 	private var _launchBg:ImageAA;
+	private var _launchBgBlur:ImageAA;
+	
+	private var _funsionA:FusionAA;
+	private var _widget:ImageAA;
+	private var _statusBar:ImageAA;
+	
 	private var _cameraBtn:ImageAA;
 	private var _desktopBtn:ImageAA;
 	
@@ -151,8 +187,9 @@ public class Launch_StateAA extends StateAA {
 				getRoot().getView("camera").getState().getFusion().touchable = true;
 			}
 			
-			c_state = this.getRoot().getView("camera").getState() as Camera_StateAA;
-			c_state.initCamera();
+//			c_state = this.getRoot().getView("camera").getState() as Camera_StateAA;
+//			c_state.initCamera();
+			EventUtil.edView.dispatchEvent(new V_CameraEvent(V_CameraEvent.LAUNCH_CAMERA));
 			
 		}
 		// 
@@ -200,7 +237,9 @@ public class Launch_StateAA extends StateAA {
 	
 	private function onDragging(e:DragEvent):void{
 		if(_dragFN.y < -this.getRoot().getAdapter().rootHeight * .5){
-			(this.getRoot().getView("camera").getState() as Camera_StateAA).initCamera();
+			//(this.getRoot().getView("camera").getState() as Camera_StateAA).initCamera();
+			
+			EventUtil.edView.dispatchEvent(new V_CameraEvent(V_CameraEvent.LAUNCH_CAMERA));
 		}
 	}
 	
@@ -214,17 +253,21 @@ public class Launch_StateAA extends StateAA {
 		var tweenA:ATween;
 		var durationA:Number;
 		
-		
 		if(e.touch.velocityY < -100){
+			_cameraBtn.kill();
+			
 			this.getFusion().touchable = false;
 			
-			tweenA = TweenMachine.to(_dragFN, ViewCfg.DURA_DESKTOP, {alpha:0.0});
+			_launchBgBlur.visible = true;
+			TweenMachine.to(_funsionA, ViewCfg.DURA_DESKTOP, {y:_launchBgBlur.y - 220 }).easing = Quad.easeOut;
+			TweenMachine.from(_launchBgBlur, ViewCfg.DURA_DESKTOP, { alpha:0.5});
+			tweenA = TweenMachine.to(_launchBg, ViewCfg.DURA_DESKTOP, {alpha:0.0});
+			
 			//tweenA.easing = Quad.easeOut;
 			tweenA.onComplete = function() : void {
-				
-				getFusion().kill();
-				
+				_dragFN.kill();
 			}
+			
 			if(_intoUnlock){
 				this.getRoot().getView("unlock").activate();
 			}

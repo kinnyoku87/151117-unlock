@@ -1,6 +1,6 @@
 package AA {
-	import AA.comps.UnlockBlock_StateAA;
-	import AA.comps.UnlockCell_StateAA;
+	import AA.unlock.a.UnlockBlock_StateAA;
+	import AA.unlock.b.UnlockCell_StateAA;
 	
 	import configs.ViewCfg;
 	
@@ -15,6 +15,7 @@ package AA {
 	import d2armor.utils.AMath;
 	
 	import util.ImageUtil;
+	import util.ResUtil;
 	
 public class Unlock_StateAA extends StateAA {
 	
@@ -37,15 +38,32 @@ public class Unlock_StateAA extends StateAA {
 		_closeBtn.scaleY = ViewCfg.HOTSPOT_SCALE;
 		_fusionA.addNode(_closeBtn);
 		_closeBtn.addEventListener(ATouchEvent.CLICK, onCloseDesktop);
-		tweenA = TweenMachine.from(_fusionA, ViewCfg.DURA_UNLOCK, {alpha:0.0});
+		
+		imgA = ImageUtil.createImg(ResUtil.getTemp("label_A"));
+		_fusionA.addNode(imgA);
+		imgA.x = 220;
+		imgA.y = 1560;
+		
+		imgA = ImageUtil.createImg(ResUtil.getTemp("label_B"));
+		_fusionA.addNode(imgA);
+		imgA.x = (this.getRoot().getAdapter().rootWidth - imgA.sourceWidth) * .5;
+		imgA.y = 280;
+		
+		imgA = ImageUtil.createImg(ResUtil.getTemp("label_C"));
+		_fusionA.addNode(imgA);
+		imgA.x = this.getRoot().getAdapter().rootWidth - imgA.sourceWidth - 220;
+		imgA.y = 1560;
+		
+		tweenA = TweenMachine.from(_fusionA, ViewCfg.DURA_UNLOCK, {alpha:0.0}, ViewCfg.DELAY_UNLOCK);
 		tweenA.onComplete = function() : void {
 			getFusion().touchable = true;
 		}
+			
 		
 		_unlockBlockFN = new StateFusionAA;
 		this.getFusion().addNode(_unlockBlockFN);
 		_unlockBlockFN.setState(UnlockBlock_StateAA, [onSuccess]);
-		
+	
 		
 		
 		

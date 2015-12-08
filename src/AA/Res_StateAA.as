@@ -27,9 +27,20 @@ public class Res_StateAA extends StateAA {
 				"temp/desk.png",
 				"temp/desk_bg.png",
 				
-				"atlas/common/password_A.png",
-				"atlas/common/password_B.png",
-				"temp/launch_bg.png"
+				"temp/label_A.png",
+				"temp/label_B.png",
+				"temp/label_C.png",
+				"temp/circ_A.png",
+				"temp/circ_B.png",
+				"temp/line_A.png",
+				"temp/launch_bg_blur.png",
+				
+//				"atlas/common/password_A.png",
+//				"atlas/common/password_B.png",
+				"temp/launch_bg.png",
+				
+				"temp/statusBar.png",
+				"temp/widget.png"
 			]
 		if(!Camera.getCamera()){
 			AY.push("temp/virtualCamera.png");
